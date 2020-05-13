@@ -24,3 +24,4 @@
 [0505/205457.992:ERROR:exception_snapshot_win.cc(98)] thread ID 11316 not found in process
 [0505/205458.035:ERROR:process_reader_win.cc(123)] NtOpenThread: {Acesso Negado} Um processo solicitou acesso a um objeto, mas o direito de acesso não lhe foi concedido. (0xc0000022)
 [0505/205458.035:ERROR:exception_snapshot_win.cc(98)] thread ID 4144 not found in process
+[0512/203944.158:ERROR:file_io.cc(89)] ReadExactly: expected 36, observed 0
