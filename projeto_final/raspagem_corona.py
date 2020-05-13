@@ -42,6 +42,9 @@ class RaspagemCorona():
 
 		if dado == '':
 			dado = 0
+
+		if 'N/A':
+			#ATIVIDADE
 		
 		try:
 			dado = int(dado)
@@ -62,3 +65,5 @@ class TratamentoDados():
 
 		df.to_excel('out_corona.xlsx', sheet_name = 'analise_corona')
 
+	# def GerarPorcentagem(self, coluna_dataframe):
+		# ATIVIDADE
