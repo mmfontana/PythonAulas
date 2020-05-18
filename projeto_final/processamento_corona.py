@@ -1,12 +1,12 @@
-from raspagem_corona import RaspagemCorona, TratamentoDados
+from raspagem_corona import RaspagemCorona, TratamentoDados, TratamentoGrafico
 
 
 
 if __name__ == '__main__':
-
+	
 	raspador = RaspagemCorona()
 
-	paises_out = [5, 6, 20]
+	paises_out = [5, 6, 18, 20]
 	n_primeiro = 4 
 	n_ultimo_pais = 34
 
@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
 		if pais not in paises_out:
 
-			for coluna in range(1,13):
+			for coluna in range(1,15):
 				dado = raspador.RasparDados(pais, coluna)
 				dado = raspador.TratarString(dado)
 				dados_pais.append(dado)
@@ -30,8 +30,8 @@ if __name__ == '__main__':
 			pass
 
 	tratamento = TratamentoDados()
-
 	df = tratamento.ParaDataFrame(dict_final)
 	tratamento.ParaExcel(df)
+
+	print(df)
 		
-print(df)
