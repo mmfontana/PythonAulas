@@ -1,7 +1,8 @@
 from selenium import webdriver
+import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
-
+import numpy as np
 
 class RaspagemCorona():
 
@@ -9,6 +10,7 @@ class RaspagemCorona():
 
 		self.driver = webdriver.Chrome()
 		self.driver.get('https://www.worldometers.info/coronavirus/')
+
 
 	def RasparDados(self, pais, coluna):
 
@@ -45,8 +47,8 @@ class RaspagemCorona():
 		if dado == '':
 			dado = 0
 
-		#if 'N/A':
-		#ATIVIDADE
+		if dado == 'N/A':
+			dado = np.nan
 		
 		try:
 			dado = int(dado)
@@ -63,25 +65,67 @@ class TratamentoDados():
 
 		return df
 
+	def TratarDataFrame(self, df):
+
+		df = df.reset_index()
+		df = df.rename(columns={'index': 'Paises'})
+
+		return df
+
 	def ParaExcel(self, df):
 
 		df.to_excel('out_corona.xlsx', sheet_name = 'analise_corona')
 
-	# def GerarPorcentagem(self, coluna_dataframe):
-		# ATIVIDADE
-	
-	def LerExcel(self):
+	def GerarPorcentagem(self, df, coluna_dataframe):
+		
+		soma = df[coluna_dataframe].sum()
 
-		df = pd.read_excel('_out_corona.xlsx')
-		df.rename(columns={'Unnamed: 0':'Paises'},
-                 inplace=True)
-		#df = df.set_index('Paises')
+		nova_coluna = 'porcentagem_' + coluna_dataframe
+		
+		df[nova_coluna] = ((df[coluna_dataframe])/soma) * 100
 
 		return df
 
+	
+	def LerExcel(self):
+
+		df = pd.read_excel('last_version_out_corona.xlsx')
+		del df['Unnamed: 0']
+
+		return df
 
 class TratamentoGrafico():
 
 	def PlotarBarrasComposto(self, df):
+		
+		paises = df['Paises']
+
+		fig = go.Figure()
+
+		fig.add_trace(go.Bar(
+		    x=paises,
+		    y=df['Total de Casos'],
+		    name='Total de Casos',
+		    marker_color='indianred'
+		))
+		fig.add_trace(go.Bar(
+		    x=paises,
+		    y=df['Total de Mortes'],
+		    name='Total de Mortes',
+		    marker_color='lightsalmon'
+		))
+
+		# Here we modify the tickangle of the xaxis, resulting in rotated labels.
+		fig.update_layout(barmode='group', 
+						  xaxis_tickangle=-45, 
+						  title = 'Incidência Mundial do Vírus',
+						  font = dict(family="Courier New, monospace",
+        							  size=18,
+        							  color="#7f7f7f")
+						  )
+		fig.write_html('tmp.html', auto_open=True)
+
+
+	def PlotarMapa(self, df):
 		
 		pass
