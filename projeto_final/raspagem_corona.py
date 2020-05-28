@@ -123,9 +123,33 @@ class TratamentoGrafico():
         							  size=18,
         							  color="#7f7f7f")
 						  )
-		fig.write_html('tmp.html', auto_open=True)
+		fig.write_html('barras_corona.html', auto_open=True)
 
 
 	def PlotarMapa(self, df):
+
+		df_base = px.data.gapminder()
+
+		df_base = df_base.drop_duplicates(subset="country")
+
+		out_df = df_base[['country', 'iso_alpha', 'continent']]
+
+		out_df.at[1596, 'country'] = 'UK'
+		out_df.at[1608, 'country'] = 'USA'
 		
-		pass
+		df = df[['Paises', 'Total de Casos']]
+		
+		final_df = out_df.merge(df, left_on = 'country', right_on = 'Paises')
+		
+		fig = px.scatter_geo(final_df, locations="iso_alpha", color="continent",
+		                     hover_name="country", size="Total de Casos",
+		                     projection="natural earth")
+
+		fig.update_layout(title = 'Número Total de Casos: COVID-19',
+						  font = dict(family="Courier New, monospace",
+        							  size=18,
+        							  color="#7f7f7f")
+						  )
+
+
+		fig.write_html('mapa_corona.html', auto_open=True)

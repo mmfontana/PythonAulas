@@ -46,7 +46,7 @@ if __name__ == '__main__':
 	df = tratamento.GerarPorcentagem(df, 'Total de Casos')
 
 	tratamento_grafico = TratamentoGrafico()
-	tratamento_grafico.PlotarBarrasComposto(df)
+	#tratamento_grafico.PlotarBarrasComposto(df)
 
 	tratamento_grafico.PlotarMapa(df)
 		
